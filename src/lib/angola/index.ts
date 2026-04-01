@@ -1,0 +1,5 @@
+export * from './moeda'
+export * from './iva'
+export * from './inss'
+export * from './irt'
+export * from './fatura'
