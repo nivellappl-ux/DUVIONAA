@@ -63,7 +63,7 @@ export async function criarFatura(formData: z.infer<typeof FaturaSchema>) {
         total: totais.total,
         estado: 'emitida',
         criado_por: user.id,
-    }).select().single()
+    } as any).select().single()
 
     const fatura = faturaObj as any
     if (error) return { erro: error.message }
@@ -85,7 +85,7 @@ export async function criarFatura(formData: z.infer<typeof FaturaSchema>) {
                 total: linha.total,
                 ordem: i,
             }
-        })
+        }) as any
     )
 
     revalidatePath('/faturas')
@@ -103,7 +103,7 @@ export async function marcarFaturaPaga(faturaId: string, metodoPagamento: string
     const fatura = faturaObj as any
     if (!fatura) return { erro: 'Fatura não encontrada' }
 
-    await supabase.from('faturas').update({ estado: 'paga', updated_at: new Date().toISOString() })
+    await supabase.from('faturas').update({ estado: 'paga', updated_at: new Date().toISOString() } as any)
         .eq('id', faturaId)
 
     await supabase.from('pagamentos').insert({
@@ -113,7 +113,7 @@ export async function marcarFaturaPaga(faturaId: string, metodoPagamento: string
         metodo: metodoPagamento,
         data_pagamento: new Date().toISOString().split('T')[0],
         criado_por: user.id,
-    })
+    } as any)
 
     revalidatePath('/faturas')
     revalidatePath(`/faturas/${faturaId}`)
